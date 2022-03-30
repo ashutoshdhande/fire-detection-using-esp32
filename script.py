@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import token
 import urllib.request
 import cv2 as cv
 import numpy as np
@@ -5,6 +6,12 @@ from PIL import Image
 from keras import models
 from keras.preprocessing import image
 import time
+import os
+import telegram_send
+
+# Enviroment vars
+# os.environ['token']='5230365611:AAHr8LeyMYioTE3amGeTxlXp6BJCGnmuXY0'
+api_token = '5230365611:AAHr8LeyMYioTE3amGeTxlXp6BJCGnmuXY0'
 
 #load the model
 model = models.load_model('fire_model.h5')
@@ -27,6 +34,7 @@ while True:
     if prediction == 0:
         frame = cv.cvtColor(frame, cv.COLOR_RGB2GRAY)
         print("Fire detected")
+        telegram_send.send(messages=["ALERT!!!", "Fire detected!!!"])
         # print(probabilities[prediction])
         time.sleep(2)
     cv.imshow('Window', frame)
